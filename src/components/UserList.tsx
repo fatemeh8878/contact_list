@@ -15,7 +15,7 @@ import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { useGetUsersQuery } from "../services/usersApi";
 
 interface User {
-  id: string; // id is a string now
+  id: string;
   name: string;
   avatar: string;
   isFavorite: boolean;
