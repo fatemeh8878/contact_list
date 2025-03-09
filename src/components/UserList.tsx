@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleFavorite } from "../slices/favoritesSlice";
-import { useGetUsersQuery } from "../services/usersApi";
 import {
   CircularProgress,
   TextField,
@@ -13,16 +12,17 @@ import {
   Avatar,
 } from "@mui/material";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import { useGetUsersQuery } from "../services/usersApi";
 
 interface User {
-  id: number;
+  id: string; // id is a string now
   name: string;
-  username: string;
-  email: string;
+  avatar: string;
+  isFavorite: boolean;
 }
 
 interface RootState {
-  favorites: number[];
+  favorites: string[];
 }
 
 const UserList = () => {
@@ -36,8 +36,7 @@ const UserList = () => {
   const filteredUsers = users?.filter(
     (user: User) =>
       user.name.toLowerCase().includes(search.toLowerCase()) ||
-      user.email.toLowerCase().includes(search.toLowerCase()) ||
-      user.username.toLowerCase().includes(search.toLowerCase())
+      user.avatar.toLowerCase().includes(search.toLowerCase())
   );
 
   if (isLoading) return <CircularProgress />;
@@ -66,18 +65,13 @@ const UserList = () => {
               <CardContent>
                 <Grid container spacing={2}>
                   <Grid item>
-                    <Avatar sx={{ backgroundColor: "#fff", color: "#F44336" }}>
-                      {user.name[0]}
-                    </Avatar>
+                    <Avatar
+                      sx={{ backgroundColor: "#fff", color: "#F44336" }}
+                      src={user.avatar}
+                    />
                   </Grid>
                   <Grid item xs>
                     <Typography variant="h6">{user.name}</Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      {user.username}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      {user.email}
-                    </Typography>
                   </Grid>
                 </Grid>
               </CardContent>
